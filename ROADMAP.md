@@ -32,6 +32,7 @@
 - [ ] Act/frame duplication
 - [ ] Cloud sync (when ready to expand beyond single-user)
 - [ ] Collaborative editing (future expansion)
+- [ ] **AI Prompt Generator** - users type rough idea → get polished AI image prompt (text only, no images generated)
 
 ---
 
