@@ -1,39 +1,64 @@
-# Storyboard App - Roadmap
+# Storyboard App - Unified Roadmap
 
-## Completed Features
-- 5 ACTs × 3 Frames grid layout
-- Status workflow (PENDING → COPIED → GENERATED → SHARED)
-- Image uploads
-- Link sharing (auto-detects YouTube/TikTok/etc.)
-- Export (JSON/EDL/ZIP)
-- Slideshow preview mode
-- LocalStorage persistence
-
-## Known Issues / Feedback (Batch for later fix)
-
-### High Priority
-1. **Slideshow modal won't close**
-   - Modal is too large for browser window
-   - No way to access the X button (offscreen)
-   - Need: smaller modal OR scrollable OR close button always accessible
-
-2. **Image data not persisting**
-   - Text data saves fine on refresh
-   - Uploaded images disappear after refresh
-   - Need: Convert images to base64 for LocalStorage OR implement file handling differently
-
-### Medium Priority
-- [ ] Add close button to slideshow that works on mobile/small screens
-- [ ] Make slideshow modal responsive/scollable
-- [ ] Implement proper image persistence (base64 or alternative storage)
-
-### Future Ideas
-- [ ] Drag-and-drop reordering
-- [ ] Act/frame duplication
-- [ ] Cloud sync (when ready to expand beyond single-user)
-- [ ] Collaborative editing (future expansion)
-- [ ] **AI Prompt Generator** - users type rough idea → get polished AI image prompt (text only, no images generated)
+**Created:** 2026-09-10
+**Purpose:** Visual storyboard tool for multi-shot video/AI generation projects
 
 ---
 
-*Last updated: 2026-09-10*
+## ✅ COMPLETED (Working Now)
+
+| Feature | Status | Date Completed |
+|---------|--------|----------------|
+| 5 ACTs × 3 Frames grid layout | ✅ Working | 2026-09-10 |
+| Status workflow (PENDING→COPIED→GENERATED→SHARED) | ✅ Working | 2026-09-10 |
+| Image uploads | ✅ Working | 2026-09-10 |
+| Link sharing (auto-detects YouTube/TikTok/etc.) | ✅ Working | 2026-09-10 |
+| Export (JSON/EDL/ZIP) | ✅ Working | 2026-09-10 |
+| Slideshow preview mode | ⚠️ Broken | 2026-09-10 |
+| LocalStorage persistence | ⚠️ Partial | 2026-09-10 |
+
+**Live URL:** https://storyboard-app-jade.vercel.app
+**GitHub:** https://github.com/CuriousCornucopious/storyboard-app
+
+---
+
+## 🚨 KNOWN ISSUES (Batch Fix - Next Session)
+
+| Issue | Description | Priority |
+|-------|-------------|----------|
+| **Slideshow won't close** | Modal too large, X button inaccessible | HIGH |
+| **Images don't persist** | Text saves, uploaded images vanish on refresh | HIGH |
+
+---
+
+## 📋 NEXT SESSION - START HERE
+
+### Todo List:
+1. Fix slideshow modal - make scrollable OR add fixed close button
+2. Fix image persistence - convert to base64 OR alternative storage
+3. Deploy fixes to Vercel
+
+### After Fixes - Future Features:
+- AI Prompt Generator (text-only helper for users without AI access)
+- Drag-and-drop reordering
+- Act/frame duplication
+
+---
+
+## 📖 Original Vision (Reference)
+
+**Grid System:**
+- Horizontal (Left→Right): Acts
+- Vertical (Top↓Bottom): Frames
+- Move RIGHT when shot is locked, UP/DOWN to elaborate
+
+**Status Flow:**
+- PENDING → COPIED (when prompt copied) → GENERATED (when image uploaded) → SHARED (when link added)
+
+**Views:**
+- Collapsed: Grid of act cards + slideshow
+- Expanded: All frames in act, vertically stacked
+
+---
+
+*Last consolidated: 2026-09-10*
