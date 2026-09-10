@@ -1,3 +1,4 @@
+import React from 'react';
 export default function DeveloperNotes({ notes, onChange }) {
   return (
     <div className="bg-gray-800 rounded-lg p-4 mt-4">

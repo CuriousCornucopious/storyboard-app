@@ -2,3 +2,4 @@
 dpm-lock.yaml
 dist/
 .env
+.vercel

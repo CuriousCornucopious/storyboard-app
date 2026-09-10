@@ -1,3 +1,4 @@
+import React from 'react';
 const statusColors = {
   PENDING: { bg: '#888888', text: '#ffffff' },
   COPIED: { bg: '#007BFF', text: '#ffffff' },

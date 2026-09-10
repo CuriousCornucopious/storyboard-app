@@ -1,3 +1,5 @@
+import React from 'react';
+
 const STORAGE_KEY = 'storyboard-data';
 
 const createDefaultStory = () => ({
@@ -34,45 +36,52 @@ export function useStoryStorage() {
       ...prev,
       acts: prev.acts.map(act => 
         act.actNum === actNum
+          ? { ...act, frames: act.frames.map(frame =>
+              frame.frameNum === frameNum ? { ...frame, ...updates } : frame
+            )}
+          : act
+      )
+    }));
+  };
+
+  const insertFrame = (actNum, frameNum) => {
+    setStory(prev => ({
+      ...prev,
+      acts: prev.acts.map(act =>
+        act.actNum === actNum
           ? {
               ...act,
-              frames: act.frames.map(frame =>
-                frame.frameNum === frameNum
-                  ? { ...frame, ...updates }
-                  : frame
-              )
+              frames: [
+                ...act.frames.slice(0, frameNum - 1),
+                {
+                  frameNum,
+                  title: `Scene ${frameNum}`,
+                  status: 'PENDING',
+                  prompt: '',
+                  filename: '',
+                  duration: 3,
+                  transition: 'CUT',
+                  sharedLinks: [],
+                  notes: ''
+                },
+                ...act.frames.slice(frameNum - 1).map(f => ({ ...f, frameNum: f.frameNum + 1 }))
+              ]
             }
           : act
       )
     }));
   };
 
-  const insertFrame = (actNum, afterFrameNum = null) => {
+  const insertAct = (actNum) => {
     setStory(prev => ({
       ...prev,
-      acts: prev.acts.map(act => {
-        if (act.actNum !== actNum) return act;
-        const newFrames = [];
-        act.frames.forEach((frame, idx) => {
-          newFrames.push(frame);
-          if (afterFrameNum === frame.frameNum) {
-            newFrames.push({
-              frameNum: frame.frameNum + 0.5,
-              title: 'New Frame',
-              status: 'PENDING',
-              prompt: '',
-              filename: '',
-              duration: 3,
-              transition: 'CUT',
-              sharedLinks: [],
-              notes: ''
-            });
-          }
-        });
-        if (afterFrameNum === null) {
-          newFrames.push({
-            frameNum: newFrames.length + 1,
-            title: 'New Frame',
+      acts: [
+        ...prev.acts.slice(0, actNum - 1),
+        {
+          actNum,
+          frames: Array.from({ length: 3 }, (_, i) => ({
+            frameNum: i + 1,
+            title: `Scene ${i + 1}`,
             status: 'PENDING',
             prompt: '',
             filename: '',
@@ -80,86 +89,25 @@ export function useStoryStorage() {
             transition: 'CUT',
             sharedLinks: [],
             notes: ''
-          });
-        }
-        // Renumber frames
-        return {
-          ...act,
-          frames: newFrames
-            .sort((a, b) => a.frameNum - b.frameNum)
-            .map((f, i) => ({ ...f, frameNum: i + 1 }))
-        };
-      })
+          }))
+        },
+        ...prev.acts.slice(actNum - 1).map(a => ({ ...a, actNum: a.actNum + 1 }))
+      ]
     }));
   };
 
-  const insertAct = (afterActNum = null) => {
-    setStory(prev => {
-      const newActs = [];
-      prev.acts.forEach((act, idx) => {
-        newActs.push(act);
-        if (afterActNum === act.actNum) {
-          newActs.push({
-            actNum: act.actNum + 0.5,
-            frames: [{
-              frameNum: 1,
-              title: 'Scene 1',
-              status: 'PENDING',
-              prompt: '',
-              filename: '',
-              duration: 3,
-              transition: 'CUT',
-              sharedLinks: [],
-              notes: ''
-            }]
-          });
-        }
-      });
-      if (afterActNum === null) {
-        newActs.push({
-          actNum: newActs.length + 1,
-          frames: [{
-            frameNum: 1,
-            title: 'Scene 1',
-            status: 'PENDING',
-            prompt: '',
-            filename: '',
-            duration: 3,
-            transition: 'CUT',
-            sharedLinks: [],
-            notes: ''
-          }]
-        });
-      }
-      return {
-        ...prev,
-        acts: newActs
-          .sort((a, b) => a.actNum - b.actNum)
-          .map((a, i) => ({ ...a, actNum: i + 1 }))
-      };
-    });
-  };
-
   const getProgress = () => {
-    let total = 0;
-    let complete = 0;
+    let total = 0, completed = 0;
     story.acts.forEach(act => {
       act.frames.forEach(frame => {
         total++;
-        if (frame.status !== 'PENDING') complete++;
+        if (frame.status === 'SHARED') completed++;
       });
     });
-    return { total, complete, percent: total > 0 ? Math.round((complete / total) * 100) : 0 };
+    return { total, completed, percent: total ? Math.round((completed / total) * 100) : 0 };
   };
 
-  return {
-    story,
-    setStory,
-    updateFrame,
-    insertFrame,
-    insertAct,
-    getProgress
-  };
+  return { story, setStory, updateFrame, insertFrame, insertAct, getProgress };
 }
 
 export function exportJSON(story) {
@@ -167,20 +115,14 @@ export function exportJSON(story) {
 }
 
 export function exportEDL(story) {
-  let edl = `TITLE: ${story.name}\n`;
+  let edl = 'TITLE: UNTITLED\nFCM: NON-DROP FRAME\n\n';
   let timecode = 0;
-  
   story.acts.forEach(act => {
     act.frames.forEach(frame => {
-      if (frame.filename) {
-        const tc = new Date(timecode * 1000).toISOString().substr(11, 8);
-        edl += `${tc}  ${frame.filename}  ${frame.duration}  ${frame.transition}\n`;
-        timecode += frame.duration;
-      }
+      const tc = new Date(timecode * 1000).toISOString().substr(11, 8);
+      edl += `${String(frame.frameNum).padStart(3, '0')}  001      V     C        ${tc} 00:00:00:00\n`;
+      timecode += frame.duration;
     });
   });
-  
   return edl;
 }
-
-export default useStoryStorage;
