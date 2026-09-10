@@ -1,5 +1,5 @@
 -e node_modules/
 dpm-lock.yaml
 dist/
-.env
 .vercel
+.env
