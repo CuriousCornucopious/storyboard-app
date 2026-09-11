@@ -2,6 +2,16 @@ import React from 'react';
 
 const STORAGE_KEY = 'storyboard-data';
 
+// Convert file to base64 for persistence
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
 const createDefaultStory = () => ({
   name: 'UNTITLED NEW STORY',
   acts: Array.from({ length: 5 }, (_, actIndex) => ({

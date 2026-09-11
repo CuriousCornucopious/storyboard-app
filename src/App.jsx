@@ -74,23 +74,31 @@ export default function App() {
     zip.file('project.json', exportJSON(story));
     
     const assets = zip.folder('assets');
-    const promises = [];
     
     story.acts.forEach(act => {
       act.frames.forEach(frame => {
-        if (frame.imageUrl && frame.imageUrl.startsWith('blob:')) {
-          promises.push(
+        if (frame.imageUrl) {
+          // Handle both base64 and blob URLs
+          if (frame.imageUrl.startsWith('data:')) {
+            // Base64 - extract and save directly
+            const base64Data = frame.imageUrl.split(',')[1];
+            const binary = atob(base64Data);
+            const array = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+              array[i] = binary.charCodeAt(i);
+            }
+            assets.file(frame.filename || `frame-${act.actNum}-${frame.frameNum}.png`, array);
+          } else if (frame.imageUrl.startsWith('blob:')) {
+            // Blob URL - fetch and save
             fetch(frame.imageUrl)
               .then(res => res.blob())
               .then(blob => {
                 assets.file(frame.filename || `frame-${act.actNum}-${frame.frameNum}.png`, blob);
-              })
-          );
+              });
+          }
         }
       });
     });
-    
-    await Promise.all(promises);
     
     const content = await zip.generateAsync({ type: 'blob' });
     saveAs(content, `${story.name.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.zip`);

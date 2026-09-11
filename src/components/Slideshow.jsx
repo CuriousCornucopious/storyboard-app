@@ -37,7 +37,7 @@ export default function Slideshow({ story, isOpen, onClose }) {
   if (!isOpen) return null;
   
   return (
-    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto">
       <div className="bg-gray-800 rounded-xl max-w-4xl w-full">
         <div className="flex justify-between items-center p-4 border-b border-gray-700">
           <h3 className="text-xl font-bold text-white">🎬 Slideshow Preview</h3>

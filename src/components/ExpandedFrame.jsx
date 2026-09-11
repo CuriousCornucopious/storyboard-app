@@ -34,13 +34,14 @@ export default function ExpandedFrame({ frame, actNum, onClose, onUpdate }) {
     }
   };
   
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
+      // Convert to base64 for persistence
+      const base64 = await fileToBase64(file);
       const filename = `frame-ACT${actNum}-frame${frame.frameNum}.png`;
-      setLocalFrame(prev => ({ ...prev, status: 'GENERATED', filename, imageUrl: url }));
-      onUpdate(actNum, frame.frameNum, { status: 'GENERATED', filename, imageUrl: url });
+      setLocalFrame(prev => ({ ...prev, status: 'GENERATED', filename, imageUrl: base64 }));
+      onUpdate(actNum, frame.frameNum, { status: 'GENERATED', filename, imageUrl: base64 });
     }
   };
   
