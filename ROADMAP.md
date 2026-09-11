@@ -44,6 +44,20 @@
 
 ---
 
+## 💡 SaaS Decision (2026-09-11)
+
+**DECISION: Building SaaS version**
+
+**Plan:**
+1. Use current app to create Dolores video (real project, real feedback)
+2. Take notes along the way — what's cumbersome, what works, what needs change
+3. Use feedback to design/build SaaS version
+
+**Current user feedback:**
+- _[Add notes here as they use the app]_
+
+---
+
 ## 💡 SaaS Discussion (2026-09-11)
 
 **What is SaaS?**
