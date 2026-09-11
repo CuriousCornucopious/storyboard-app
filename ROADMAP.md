@@ -26,8 +26,9 @@
 
 | Issue | Description | Priority |
 |-------|-------------|----------|
+| **New story loses photos** | Photos persist within a story but not when creating new story. Need import/duplicate frame feature. | MEDIUM |
 | **Slideshow won't close** | Modal too large, X button inaccessible | HIGH |
-| **Images don't persist** | Text saves, uploaded images vanish on refresh | HIGH |
+| **Images don't persist** | Text saves, uploaded images vanish on refresh | ~~HIGH~~ ✅ FIXED |
 
 ---
 
