@@ -64,6 +64,28 @@ export default function App() {
     saveAs(blob, `${story.name.replace(/\s+/g, '-').toLowerCase()}-${new Date().toISOString().split('T')[0]}.json`);
   };
   
+  const handleImportJSON = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (imported.name && imported.acts) {
+          setStory(imported);
+          alert(`Imported "${imported.name}" successfully!`);
+        } else {
+          alert('Invalid storyboard file format');
+        }
+      } catch (err) {
+        alert('Error reading file: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = ''; // Reset for re-import
+  };
+  
   const handleExportEDL = () => {
     const blob = new Blob([exportEDL(story)], { type: 'text/plain' });
     saveAs(blob, `${story.name.replace(/\s+/g, '-').toLowerCase()}.edl`);
@@ -148,6 +170,10 @@ export default function App() {
                 </button>
               </div>
             </div>
+            <label className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg cursor-pointer">
+              📂 Import
+              <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
+            </label>
           </div>
         </div>
         
