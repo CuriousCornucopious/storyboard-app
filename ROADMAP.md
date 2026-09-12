@@ -19,7 +19,7 @@
 | LocalStorage persistence | ✅ Fixed | 2026-09-10 |
 
 **Live URL:** https://storyboard-app-jade.vercel.app
-**GitHub:** https://github.com/CuriousCornucopious/the-chair-storyboard
+**GitHub:** https://github.com/CuriousCornucopious/storyboard-app
 
 ---
 
